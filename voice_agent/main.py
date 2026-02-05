@@ -40,13 +40,13 @@ def main():
 
     print("""
 ---------------------------------------------------------------
-                     Voice Agent
-             Real-time Conversational AI
+              Voice Interview Agent
+           Real-time AI Voice Interviewer
 ---------------------------------------------------------------
   Powered by:
     * LangChain + Ollama (LLM)
-    * FasterWhisper (Speech-to-Text)
-    * Piper TTS (Text-to-Speech)
+    * Deepgram Nova-2 (Speech-to-Text)
+    * Deepgram Aura (Text-to-Speech)
     * Silero VAD (Voice Activity Detection)
 ---------------------------------------------------------------
 """)

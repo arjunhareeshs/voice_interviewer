@@ -1,103 +1,116 @@
-# Voice Agent 🎙️
+# Voice Interview Agent 🎙️
 
-A real-time conversational AI voice agent using **LangChain**, **Whisper**, and **Piper TTS**. Talk naturally with an AI assistant - all running locally on your machine.
+A real-time AI voice interviewer that conducts technical placement interviews. Built with **LangChain + Ollama** for AI, **Deepgram** for speech, and **React** for the frontend.
 
-## Features
-
-- 🎤 **Real-time Voice Conversation** - Natural bidirectional audio via WebSocket
-- 🔇 **Voice Activity Detection** - Silero VAD for accurate speech detection
-- 📝 **Speech-to-Text** - FasterWhisper for fast, accurate transcription
-- 🤖 **LangChain + Ollama** - Intelligent responses with conversation memory
-- 🔊 **Text-to-Speech** - Piper TTS with natural voices
-- 🌐 **Modern Web UI** - Clean, responsive interface
-
-## Quick Start
+## 🚀 Quick Start (5 minutes)
 
 ### 1. Prerequisites
 
 - **Python 3.10+**
-- **Ollama** running with a model:
+- **Node.js 18+**
+- **Ollama** running locally:
   ```bash
-  # Install Ollama from https://ollama.ai
-  ollama pull llama3.2
+  # Install from https://ollama.ai, then:
+  ollama pull qwen3:8b
+  ollama pull nomic-embed-text
   ollama serve
   ```
 
-### 2. Installation
+### 2. Get Deepgram API Key
+
+1. Go to [console.deepgram.com](https://console.deepgram.com/)
+2. Create a free account (free credits included)
+3. Copy your API key
+
+### 3. Configure Environment
+
+Edit `.env` file in project root:
+```bash
+DEEPGRAM_API_KEY=your_api_key_here
+```
+
+### 4. Install & Run Backend
 
 ```bash
-# Clone and enter directory
-cd voice-agent
-
-# Install with pip
+# Install Python dependencies
 pip install -e .
 
-# Or with uv (faster)
-uv pip install -e .
+# Run the server
+python run.py
 ```
 
-### 3. Download Voice Model
-
-Download a Piper voice model from [Hugging Face](https://huggingface.co/rhasspy/piper-voices):
+### 5. Run Frontend (Optional - for development)
 
 ```bash
-# Create models directory
-mkdir -p models/piper
-
-# Download voice (example: en_US-lessac-medium)
-cd models/piper
-curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx
-curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json
+cd frontend
+npm install
+npm run dev
 ```
 
-### 4. Run the Agent
+### 6. Use the App
 
-```bash
-# Run with CLI
-voice-agent
+1. Open `http://localhost:8000` in your browser
+2. Upload your resume (PDF/DOCX)
+3. Click "Start Interview" and speak!
 
-# Or run as module
-python -m voice_agent.main
+---
 
-# Or with custom options
-voice-agent --host 127.0.0.1 --port 8080
-```
-
-### 5. Open the Web Interface
-
-Navigate to `http://localhost:8000` in your browser and start talking!
-
-## Configuration
-
-Copy `.env.example` to `.env` and customize:
-
-```bash
-cp .env.example .env
-```
-
-Key settings:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `OLLAMA_MODEL` | Ollama model name | `llama3.2` |
-| `WHISPER_MODEL_SIZE` | Whisper model size | `base` |
-| `PIPER_VOICE` | Piper voice name | `en_US-lessac-medium` |
-| `SERVER_PORT` | Server port | `8000` |
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 voice-agent/
-├── voice_agent/
-│   ├── __init__.py
-│   ├── main.py           # CLI entry point
-│   ├── server.py         # FastAPI WebSocket server
-│   ├── config.py         # Configuration
-│   ├── services/
-│   │   ├── vad.py        # Voice Activity Detection
-│   │   ├── stt.py        # Speech-to-Text (Whisper)
-│   │   ├── llm.py        # LangChain + Ollama
-│   │   └── tts.py        # Text-to-Speech (Piper)
+├── run.py              # Start server here
+├── .env                # Configuration (API keys)
+├── voice_agent/        # Backend Python code
+│   ├── server.py       # FastAPI WebSocket server
+│   ├── config.py       # Configuration loader
+│   ├── services/       # Core services
+│   │   ├── llm.py      # LangChain + Ollama
+│   │   ├── stt.py      # Speech-to-Text (Deepgram)
+│   │   ├── tts.py      # Text-to-Speech (Deepgram)
+│   │   ├── vad.py      # Voice Activity Detection
+│   │   ├── resume.py   # Resume parsing + RAG
+│   │   └── interview.py# Interview state management
+│   └── prompts/        # System prompts
+├── frontend/           # React frontend
+└── data/               # Uploads and outputs
+```
+
+## ⚙️ Configuration
+
+All settings in `.env`:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OLLAMA_MODEL` | LLM model for AI responses | `qwen3:8b` |
+| `DEEPGRAM_API_KEY` | API key for speech services | Required |
+| `DEEPGRAM_VOICE` | TTS voice (asteria, orion, etc.) | `asteria` |
+| `SERVER_PORT` | Backend server port | `8000` |
+| `VAD_MIN_SILENCE_MS` | Silence before processing | `600` |
+
+## 🎯 Features
+
+- **Real-time Voice Interview**: Natural conversation flow
+- **Resume-Aware Questions**: AI asks about YOUR experience
+- **7-Phase Interview Structure**: From greeting to wrap-up
+- **Evaluation Report**: PDF with scores after interview
+- **Low Latency**: Optimized for fast responses
+
+## 🔧 Troubleshooting
+
+**"Port 8000 already in use"**
+```bash
+# Find and kill the process:
+netstat -ano | findstr :8000
+taskkill /F /PID <PID>
+```
+
+**"DEEPGRAM_API_KEY is missing"**
+- Make sure `.env` file exists with your API key
+
+**"Ollama connection failed"**
+- Run `ollama serve` in a terminal
+- Check if models are downloaded: `ollama list`
 │   └── static/
 │       └── index.html    # Web interface
 ├── models/

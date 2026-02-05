@@ -83,11 +83,39 @@ const InterviewPage: React.FC<InterviewPageProps> = ({ resume, onEnd }) => {
       setStatus(InterviewStatus.ANALYZING);
       setError(null);
 
+      // Request microphone permission
+      let stream: MediaStream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          } 
+        });
+      } catch (err: any) {
+        let errorMessage = 'Microphone access denied. ';
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+          errorMessage += 'Please allow microphone access and try again.';
+        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+          errorMessage += 'No microphone detected.';
+        } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+          errorMessage += 'Microphone is being used by another application.';
+        } else {
+          errorMessage += err.message || 'Please check your microphone settings.';
+        }
+        
+        setError(errorMessage);
+        setIsActive(false);
+        return;
+      }
+
       // Initialize audio contexts
       const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
       const inputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
       audioContextRef.current = audioCtx;
       inputContextRef.current = inputCtx;
+      mediaStreamRef.current = stream;
 
       const outNode = audioCtx.createGain();
       outNode.connect(audioCtx.destination);
@@ -97,30 +125,14 @@ const InterviewPage: React.FC<InterviewPageProps> = ({ resume, onEnd }) => {
       const ws = new WebSocket(`${getWsBaseUrl()}/ws/voice`);
       wsRef.current = ws;
 
-      ws.onopen = async () => {
-        console.log('✅ Connected to backend');
-
+      ws.onopen = () => {
         // Start new session
         ws.send(JSON.stringify({ type: 'new_session' }));
 
-        // Get microphone with explicit error handling
-        let stream;
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          console.log('✅ Microphone access granted');
-        } catch (err: any) {
-          console.error('❌ Microphone access denied:', err);
-          setError('Microphone access denied. Please allow microphone permissions and try again.');
-          cleanup();
-          return;
-        }
-        mediaStreamRef.current = stream;
-
+        // Setup audio processing
         const source = inputCtx.createMediaStreamSource(stream);
         const processor = inputCtx.createScriptProcessor(4096, 1, 1);
         processorRef.current = processor;
-
-        console.log('🎤 Audio processor initialized');
 
         processor.onaudioprocess = (e) => {
           if (ws.readyState !== WebSocket.OPEN) return;
@@ -136,7 +148,6 @@ const InterviewPage: React.FC<InterviewPageProps> = ({ resume, onEnd }) => {
 
         source.connect(processor);
         processor.connect(inputCtx.destination);
-        console.log('✅ Audio stream connected and sending');
         setStatus(InterviewStatus.IDLE);
       };
 
@@ -187,23 +198,23 @@ const InterviewPage: React.FC<InterviewPageProps> = ({ resume, onEnd }) => {
         }
       };
 
-      ws.onerror = () => {
-        setError("Connection error. Make sure backend is running.");
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        setError('Failed to connect to backend. Please ensure the server is running.');
         cleanup();
       };
 
       ws.onclose = () => {
-        console.log('WebSocket closed');
+        if (isActive) {
+          setError('Connection to backend lost.');
+          cleanup();
+        }
       };
 
     } catch (err: any) {
-      console.error('❌ Setup error:', err);
-      const errorMessage = err.name === 'NotAllowedError' 
-        ? 'Microphone access denied. Please allow microphone permissions in your browser settings and refresh the page.'
-        : err.name === 'NotFoundError'
-        ? 'No microphone found. Please connect a microphone and try again.'
-        : err.message || 'Setup failed. Please check your microphone and try again.';
-      setError(errorMessage);
+      console.error('Interview setup error:', err);
+      setError(err.message || 'Failed to start interview.');
+      setIsActive(false);
       cleanup();
     }
   };
@@ -259,7 +270,6 @@ const InterviewPage: React.FC<InterviewPageProps> = ({ resume, onEnd }) => {
             End Interview
           </button>
         )}
-        <p className="text-xs text-gray-600 font-medium tracking-wider">VOICE INTERVIEW PRO • LOCAL BACKEND</p>
       </footer>
     </div>
   );

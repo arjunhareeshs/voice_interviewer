@@ -2,85 +2,181 @@
   {
     "exchange_number": 1,
     "role": "user",
-    "content": "You hear me?",
-    "timestamp": "2026-02-05T09:57:50.974953"
+    "content": "Hello, sir. Good morning.",
+    "timestamp": "2026-02-05T16:05:17.284394"
   },
   {
     "exchange_number": 1,
     "role": "assistant",
-    "content": "Hello Arjun Hareesh. We’ll start with a short introduction, then move into your experience and technical discussion.",
-    "timestamp": "2026-02-05T09:57:58.776520"
+    "content": "Good morning, Arjun. I'm your interviewer today. Could you start by telling me about yourself and what you're currently working on?",
+    "timestamp": "2026-02-05T16:05:22.164595"
   },
   {
     "exchange_number": 2,
     "role": "user",
-    "content": "Okay.",
-    "timestamp": "2026-02-05T09:58:13.026312"
+    "content": "Yeah.",
+    "timestamp": "2026-02-05T16:05:26.335521"
   },
   {
     "exchange_number": 2,
     "role": "assistant",
-    "content": "Briefly introduce yourself, your interests, and why you applied for this role.",
-    "timestamp": "2026-02-05T09:58:16.171684"
+    "content": "I see. Could you share more about the project you’re working on right now?",
+    "timestamp": "2026-02-05T16:05:30.291560"
   },
   {
     "exchange_number": 3,
     "role": "user",
-    "content": "I'm Arjun Harish.",
-    "timestamp": "2026-02-05T09:58:17.355177"
+    "content": "Yeah, ma'am. I will say my name is Arun. I am studying technology.",
+    "timestamp": "2026-02-05T16:05:51.643461"
   },
   {
     "exchange_number": 3,
     "role": "assistant",
-    "content": "Can you describe the areas you’re most interested in within AI and data science, and what motivated you to apply for this position?",
-    "timestamp": "2026-02-05T09:58:21.186005"
+    "content": "Got it, Arun. What specific area or project are you focusing on in your AI and data science studies?",
+    "timestamp": "2026-02-05T16:05:56.858172"
   },
   {
     "exchange_number": 4,
     "role": "user",
-    "content": "Love working on computers, and I love coding so that I'm",
-    "timestamp": "2026-02-05T09:58:22.730772"
+    "content": "I'm currently working in a project.",
+    "timestamp": "2026-02-05T16:05:58.863368"
   },
   {
     "exchange_number": 4,
     "role": "assistant",
-    "content": "Please elaborate on the specific AI or data‑science topics you focus on and why this role aligns with those interests.",
-    "timestamp": "2026-02-05T09:58:25.355186"
+    "content": "Interesting. Can you describe the main goal and your personal contribution in that project?",
+    "timestamp": "2026-02-05T16:06:01.395433"
   },
   {
     "exchange_number": 5,
     "role": "user",
-    "content": "Okay.",
-    "timestamp": "2026-02-05T09:58:42.273298"
+    "content": "Rules, is fully based the a a tool. Yeah. Chatbot.",
+    "timestamp": "2026-02-05T16:06:15.653937"
   },
   {
     "exchange_number": 5,
     "role": "assistant",
-    "content": "What particular problems or projects in AI or data science excite you the most, and how does this position help you pursue them?",
-    "timestamp": "2026-02-05T09:58:46.199321"
+    "content": "I see. Could you clarify what the chatbot does and what part you built yourself?",
+    "timestamp": "2026-02-05T16:06:18.434888"
   },
   {
     "exchange_number": 6,
     "role": "user",
-    "content": "I love to work on AI under",
-    "timestamp": "2026-02-05T09:58:47.369965"
+    "content": "Device integration.",
+    "timestamp": "2026-02-05T16:06:19.335404"
   },
   {
     "exchange_number": 6,
     "role": "assistant",
-    "content": "In your Real Time Resume Analyser project, what specific components did you personally design and implement?",
-    "timestamp": "2026-02-05T09:58:49.637471"
+    "content": "Got it. Which technologies did you use to integrate the device with the chatbot, and what was your exact role in that integration?",
+    "timestamp": "2026-02-05T16:06:21.883815"
   },
   {
     "exchange_number": 7,
     "role": "user",
-    "content": "An engineer because I have done many of my codes and",
-    "timestamp": "2026-02-05T09:58:52.523243"
+    "content": "Yes. I use it in an AP called the n I 10.",
+    "timestamp": "2026-02-05T16:06:36.490295"
   },
   {
     "exchange_number": 7,
     "role": "assistant",
-    "content": "Okay. In that project, which component did you personally develop—resume parsing logic, the Streamlit interface, or the SQLite integration?",
-    "timestamp": "2026-02-05T09:58:55.924840"
+    "content": "Thanks for clarifying. What exactly is the “n I 10” platform, and how did you handle the device‑chatbot integration on it?",
+    "timestamp": "2026-02-05T16:06:40.258434"
+  },
+  {
+    "exchange_number": 8,
+    "role": "user",
+    "content": "Maybe",
+    "timestamp": "2026-02-05T16:06:43.617452"
+  },
+  {
+    "exchange_number": 8,
+    "role": "assistant",
+    "content": "I see. What was the toughest technical challenge you faced during the device‑chatbot integration, and how did you solve it?",
+    "timestamp": "2026-02-05T16:06:46.838556"
+  },
+  {
+    "exchange_number": 9,
+    "role": "user",
+    "content": "Faced a technical challenge in voice recognition of the interviewer and the",
+    "timestamp": "2026-02-05T16:07:06.340192"
+  },
+  {
+    "exchange_number": 9,
+    "role": "assistant",
+    "content": "Sorry, could you continue describing the voice‑recognition challenge you encountered and how you addressed it?",
+    "timestamp": "2026-02-05T16:07:09.327736"
+  },
+  {
+    "exchange_number": 10,
+    "role": "user",
+    "content": "Stay analyst, example wise from a user.",
+    "timestamp": "2026-02-05T16:07:28.768461"
+  },
+  {
+    "exchange_number": 10,
+    "role": "assistant",
+    "content": "I understand. Can you give a concrete example of how you improved the interviewer's voice‑recognition accuracy?",
+    "timestamp": "2026-02-05T16:07:32.050117"
+  },
+  {
+    "exchange_number": 11,
+    "role": "user",
+    "content": "To train my model.",
+    "timestamp": "2026-02-05T16:07:33.064729"
+  },
+  {
+    "exchange_number": 11,
+    "role": "assistant",
+    "content": "Got it. What data and preprocessing steps did you use to train the voice‑recognition model?",
+    "timestamp": "2026-02-05T16:07:34.913727"
+  },
+  {
+    "exchange_number": 12,
+    "role": "user",
+    "content": "I choose it to",
+    "timestamp": "2026-02-05T16:07:36.963251"
+  },
+  {
+    "exchange_number": 12,
+    "role": "assistant",
+    "content": "Okay. Which audio features did you extract, and what model architecture did you use for training?",
+    "timestamp": "2026-02-05T16:07:38.813520"
+  },
+  {
+    "exchange_number": 13,
+    "role": "user",
+    "content": "Deepgram, Adi, they used in, this model.",
+    "timestamp": "2026-02-05T16:08:00.102407"
+  },
+  {
+    "exchange_number": 13,
+    "role": "assistant",
+    "content": "I see. Could you walk me through the exact model architecture you built and how you evaluated its performance?",
+    "timestamp": "2026-02-05T16:08:03.389622"
+  },
+  {
+    "exchange_number": 14,
+    "role": "user",
+    "content": "Yeah. I built in my model which, can communicate to the user.",
+    "timestamp": "2026-02-05T16:08:14.403408"
+  },
+  {
+    "exchange_number": 14,
+    "role": "assistant",
+    "content": "Interesting. Which component did you personally implement, and what metric did you use to measure its accuracy?",
+    "timestamp": "2026-02-05T16:08:18.236196"
+  },
+  {
+    "exchange_number": 15,
+    "role": "user",
+    "content": "An interview.",
+    "timestamp": "2026-02-05T16:08:19.556311"
+  },
+  {
+    "exchange_number": 15,
+    "role": "assistant",
+    "content": "Got it. Can you describe the specific part you built—say, the speech‑to‑text or the response generation—and how you measured its success?",
+    "timestamp": "2026-02-05T16:08:22.299338"
   }
 ]

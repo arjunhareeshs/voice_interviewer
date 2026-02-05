@@ -1,32 +1,21 @@
 """
-LLM Service using LangChain Agent with Ollama.
-Now integrated with InterviewManager for structured, 7-phase technical interviews.
+LLM Service using LangChain with Ollama for real-time voice interviews.
+Optimized for low-latency streaming responses.
 """
 
-import asyncio
 import datetime
 import logging
 import json
-import os
 from typing import List, Optional
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, BaseMessage
 from langchain_ollama import ChatOllama
-# We keep agent imports if we need tools later, but strictly speaking 
-# the interview flow is now driven by the InterviewManager's prompts.
-# We will use the direct LLM invoke for the tight control required by the prompt.
 
 from ..config import config
-from ..models.interview import InterviewOutput
 from .resume import ResumeService
 from .interview import InterviewManager
 
 logger = logging.getLogger(__name__)
-
-SUMMARIZATION_PROMPT = """You are a conversation summarizer. Create a concise 2-sentence summary of the following conversation segment.
-Conversation to summarize:
-{conversation}
-Provide ONLY the 2-sentence summary, nothing else."""
 
 class LLMService:
     """
@@ -52,36 +41,19 @@ class LLMService:
         
         self.resume_service = resume_service
         
-        # Create two LLM instances:
-        # 1. Streaming LLM without JSON format for fast, token-by-token responses
+        # Single optimized LLM instance for streaming (no JSON format for faster response)
         self.llm = ChatOllama(
             base_url=config.ollama.base_url,
             model=config.ollama.model,
             temperature=config.ollama.temperature,
+            num_predict=200,  # Limit response length for faster generation
             verbose=False,
-        )
-        
-        
-        # 2. JSON LLM for structured state updates (used after streaming completes)
-        self.llm_json = ChatOllama(
-            base_url=config.ollama.base_url,
-            model=config.ollama.model,
-            temperature=config.ollama.temperature,
-            verbose=False,
-            format="json"
         )
         
         # Initialize Interview Manager with the shared resume service
         self.interview_manager = InterviewManager(self.resume_service)
         
-        # Test connection
-        try:
-            # Quick test
-            pass 
-            logger.info("Interviewer System initialized")
-        except Exception as e:
-            logger.error(f"Failed to connect: {e}")
-            raise
+        logger.info("Interviewer System initialized")
 
     async def close(self) -> None:
         """Close services and generate report."""
@@ -120,62 +92,6 @@ class LLMService:
     
     def get_full_conversation_formatted(self) -> str:
         return str(self.full_conversation_archive)
-
-    async def generate_response(self, user_message: str) -> str:
-        """Video Interview Logic."""
-        if self.llm is None or self.interview_manager is None:
-            raise RuntimeError("Service not initialized.")
-
-        # 0. Add User Message
-        self.conversation_history.append(HumanMessage(content=user_message))
-        self._archive_message("user", user_message)
-
-        # 1. Get Prompt from Manager (State Aware)
-        # We need to supply the system prompt. The Manager does the heavy lifting.
-        system_prompt = self.interview_manager.get_system_prompt()
-        
-        # We construct messages. 
-        # Note: We need to be careful with history. The Prompt changes every turn 
-        # to reflect the CURRENT phase. So we might treat history strictly as context
-        # but the System Instruction is the primary driver.
-        messages = [
-            SystemMessage(content=system_prompt),
-            *self.conversation_history[-10:] # Keep recent context mainly
-        ]
-
-        try:
-            loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(
-                None, 
-                lambda: self.llm.invoke(messages)
-            )
-            
-            content = response.content.strip()
-            logger.debug(f"LLM Raw JSON: {content}")
-            
-            # 2. Parse JSON
-            try:
-                data = json.loads(content)
-                interview_output = InterviewOutput(**data)
-                
-                # 3. Update State
-                self.interview_manager.update_state(interview_output.interview_state_update)
-                
-                response_text = interview_output.interviewer_message
-            except Exception as parse_error:
-                logger.error(f"JSON Parse Error: {parse_error} in content: {content}")
-                response_text = "Could you clarify that? I missed the details." 
-            
-            # 4. Update History
-            self.conversation_history.append(AIMessage(content=response_text))
-            self.exchange_count += 1
-            self._archive_message("assistant", response_text)
-            
-            return response_text
-            
-        except Exception as e:
-            logger.error(f"Generation failed: {e}")
-            return "Let's move on. Tell me about your next experience."
 
     async def generate_stream(self, user_message: str):
         """

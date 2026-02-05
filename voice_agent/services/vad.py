@@ -49,12 +49,11 @@ class VADService:
         # Use moderate threshold - not too strict to miss speech, not too loose to pick up noise
         self.threshold = threshold if threshold is not None else config.vad.threshold
         
-        # Minimum speech duration: 500ms to ensure user has started talking properly
-        min_speech = min_speech_duration if min_speech_duration is not None else max(config.vad.min_speech_ms / 1000.0, 0.5)
+        # Minimum speech duration: 300ms for faster detection
+        min_speech = min_speech_duration if min_speech_duration is not None else max(config.vad.min_speech_ms / 1000.0, 0.3)
         
-        # IMPORTANT: Wait longer for user to finish speaking (900ms silence = user finished)
-        # This prevents interrupting the user mid-sentence
-        min_silence = min_silence_duration if min_silence_duration is not None else max(config.vad.min_silence_ms / 1000.0, 0.9)
+        # Wait for 600ms silence = user finished (reduced from 900ms for lower latency)
+        min_silence = min_silence_duration if min_silence_duration is not None else max(config.vad.min_silence_ms / 1000.0, 0.6)
         
         self.min_speech_samples = int(min_speech * sample_rate)
         self.min_silence_samples = int(min_silence * sample_rate)
@@ -78,8 +77,8 @@ class VADService:
         # Track consecutive speech/silence for debouncing
         self._consecutive_speech = 0
         self._consecutive_silence = 0
-        self._min_consecutive_speech = 4  # Need 4 consecutive speech chunks to start (more patient)
-        self._min_consecutive_silence = 6  # Need 6 consecutive silence chunks to end (more patient)
+        self._min_consecutive_speech = 3  # Need 3 consecutive speech chunks to start (faster)
+        self._min_consecutive_silence = 4  # Need 4 consecutive silence chunks to end (faster)
         
     async def initialize(self) -> None:
         """Load Silero VAD model (cached globally)."""

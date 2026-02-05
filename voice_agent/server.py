@@ -583,7 +583,7 @@ async def voice_websocket(websocket: WebSocket):
                     
                     # Generate TTS for the greeting
                     try:
-                        audio_bytes = await tts_service.synthesize(initial_greeting, stream=False)
+                        audio_bytes = await tts_service.synthesize(initial_greeting)
                         if audio_bytes:
                             # Send greeting as audio
                             await safe_send({
@@ -769,7 +769,7 @@ async def stream_response_with_tts(transcript: str, safe_send, session_llm: LLMS
             full_response += token
             text_buffer += token
             
-            # More aggressive chunking for faster audio
+            # AGGRESSIVE chunking for lowest latency - synthesize ASAP
             should_synthesize = False
             word_count = len(text_buffer.split())
             
@@ -777,12 +777,12 @@ async def stream_response_with_tts(transcript: str, safe_send, session_llm: LLMS
             if any(char in text_buffer for char in sentence_endings):
                 should_synthesize = True
             
-            # Clause endings with lower threshold for faster chunks
-            elif word_count >= 4 and any(char in text_buffer for char in clause_endings):
+            # Clause endings with very low threshold for fast first audio
+            elif word_count >= 3 and any(char in text_buffer for char in clause_endings):
                 should_synthesize = True
             
-            # Smaller max chunk size for faster delivery
-            elif word_count >= 10:
+            # Small max chunk for fast delivery
+            elif word_count >= 6:
                 should_synthesize = True
             
             if should_synthesize and text_buffer.strip():
