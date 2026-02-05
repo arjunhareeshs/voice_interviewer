@@ -1,0 +1,86 @@
+[
+  {
+    "exchange_number": 1,
+    "role": "user",
+    "content": "You hear me?",
+    "timestamp": "2026-02-05T09:57:50.974953"
+  },
+  {
+    "exchange_number": 1,
+    "role": "assistant",
+    "content": "Hello Arjun Hareesh. We’ll start with a short introduction, then move into your experience and technical discussion.",
+    "timestamp": "2026-02-05T09:57:58.776520"
+  },
+  {
+    "exchange_number": 2,
+    "role": "user",
+    "content": "Okay.",
+    "timestamp": "2026-02-05T09:58:13.026312"
+  },
+  {
+    "exchange_number": 2,
+    "role": "assistant",
+    "content": "Briefly introduce yourself, your interests, and why you applied for this role.",
+    "timestamp": "2026-02-05T09:58:16.171684"
+  },
+  {
+    "exchange_number": 3,
+    "role": "user",
+    "content": "I'm Arjun Harish.",
+    "timestamp": "2026-02-05T09:58:17.355177"
+  },
+  {
+    "exchange_number": 3,
+    "role": "assistant",
+    "content": "Can you describe the areas you’re most interested in within AI and data science, and what motivated you to apply for this position?",
+    "timestamp": "2026-02-05T09:58:21.186005"
+  },
+  {
+    "exchange_number": 4,
+    "role": "user",
+    "content": "Love working on computers, and I love coding so that I'm",
+    "timestamp": "2026-02-05T09:58:22.730772"
+  },
+  {
+    "exchange_number": 4,
+    "role": "assistant",
+    "content": "Please elaborate on the specific AI or data‑science topics you focus on and why this role aligns with those interests.",
+    "timestamp": "2026-02-05T09:58:25.355186"
+  },
+  {
+    "exchange_number": 5,
+    "role": "user",
+    "content": "Okay.",
+    "timestamp": "2026-02-05T09:58:42.273298"
+  },
+  {
+    "exchange_number": 5,
+    "role": "assistant",
+    "content": "What particular problems or projects in AI or data science excite you the most, and how does this position help you pursue them?",
+    "timestamp": "2026-02-05T09:58:46.199321"
+  },
+  {
+    "exchange_number": 6,
+    "role": "user",
+    "content": "I love to work on AI under",
+    "timestamp": "2026-02-05T09:58:47.369965"
+  },
+  {
+    "exchange_number": 6,
+    "role": "assistant",
+    "content": "In your Real Time Resume Analyser project, what specific components did you personally design and implement?",
+    "timestamp": "2026-02-05T09:58:49.637471"
+  },
+  {
+    "exchange_number": 7,
+    "role": "user",
+    "content": "An engineer because I have done many of my codes and",
+    "timestamp": "2026-02-05T09:58:52.523243"
+  },
+  {
+    "exchange_number": 7,
+    "role": "assistant",
+    "content": "Okay. In that project, which component did you personally develop—resume parsing logic, the Streamlit interface, or the SQLite integration?",
+    "timestamp": "2026-02-05T09:58:55.924840"
+  }
+]

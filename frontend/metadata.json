@@ -1,0 +1,7 @@
+{
+  "name": "Aura Voice Interview",
+  "description": "A professional AI-driven voice interview platform with real-time audio visualization and resume integration.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
